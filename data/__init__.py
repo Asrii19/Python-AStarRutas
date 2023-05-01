@@ -22,6 +22,9 @@ city_locations = { #longitud, latitud
     "Iowa": (-93.0977, 41.8780)
 }
 
+city_prices = {
+    "Washington": {"Oregon": 2, "Idaho": 1}
+}
 mapa = {
     "Washington": {"Oregon": (-122.3321, 43.8041), "Idaho": (-114.7420, 44.0682)},
     "Oregon": {"Washington": (-120.7401, 47.7511), "California": (-119.4179, 36.7783), "Idaho": (-114.7420, 44.0682), "Nevada": (-116.7939, 38.8026)},
@@ -43,4 +46,9 @@ mapa = {
     "Arkansas": {"Missouri": (-92.4638, 38.5733), "Oklahoma": (-97.5164, 35.0078), "Texas": (-92.3020, 34.7465)},
     "Missouri": {"Iowa": (-93.0977, 41.8780), "Nebraska": (-99.9018, 41.4925), "Kansas": (-98.3804, 38.5266), "Oklahoma": (-97.5164, 35.0078), "Arkansas": (-92.3020, 34.7465)},
     "Iowa": {"Dakota Del Sur": (-99.4388, 44.3668), "Nebraska": (-99.9018, 41.4925), "Missouri": (-92.4638, 38.5733)}
+}
+
+totales = {
+    "distancia_total":0,
+    "precio_total":0
 }

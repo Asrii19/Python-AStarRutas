@@ -1,24 +1,24 @@
 from metodos.a_estrella import astar_search
 from metodos.grafico import graficar
-from metodos import encontrar_coordenadas, encontrar_ciudad
+from metodos import encontrar_coordenadas, encontrar_ciudad, hallar_totales
 
 if __name__ == "__main__":
     while True:
-        bandera, start=encontrar_ciudad(str(input("Ingrese el punto de inicio: ")).capitalize())
+        bandera, start=encontrar_ciudad(str(input("Ingrese el punto de inicio: ")).title())
         if bandera == True:
             break
         else:
-            print(f"\tNo se encontroó la ciudad {start}, por favor digite otra ciudad.")
+            print(f"\tNo se encontró la ciudad {start}, por favor digite otra ciudad.")
     while True:
-        bandera, goal=encontrar_ciudad(str(input("Ingrese el punto de llegada: ")).capitalize())
+        bandera, goal=encontrar_ciudad(str(input("Ingrese el punto de llegada: ")).title())
         if bandera == True:
             break
         else:
-            print(f"\tNo se encontroó la ciudad {goal}, por favor digite otra ciudad.")
+            print(f"\tNo se encontró la ciudad {goal}, por favor digite otra ciudad.")
     
     path = astar_search(start,goal)
 
     path_x, path_y = encontrar_coordenadas(path)
-
+    hallar_totales(path) #se hallan los totales y se modifica en data
     graficar(path_x,path_y)
     print(path)

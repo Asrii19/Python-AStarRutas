@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from data import city_locations, mapa
+from data import city_locations, mapa, totales
 
 def graficar(path_x,path_y):
     #OBTENER DATOS (COORDENADAS) DEL MAPA
@@ -26,6 +26,11 @@ def graficar(path_x,path_y):
         ax.annotate(txt, (array_x[i], array_y[i])) 
 
     # Añadir títulos y etiquetas de los ejes
+    distancia = round(totales.get("distancia_total"),2)
+    ax.text(-0.1, -0.08, f"Distancia: {distancia}km, Precio: 0$",
+        bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
+        ha='left', va='top',
+        transform=ax.transAxes)
     ax.set_title('Ruta con A*')
     ax.set_xlabel('Longitud')
     ax.set_ylabel('Latitud')
