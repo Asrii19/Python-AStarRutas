@@ -11,6 +11,12 @@ def encontrar_coordenadas(path):
                 path_y.append(value[1])
     return path_x, path_y
 
+def encontrar_ciudad(city):
+    for key in city_locations:
+        if key == city:
+            return True, city
+    return False, city
+
 def hallar_maximos():
     array_distancias = []
     for city1 in city_locations.keys():
