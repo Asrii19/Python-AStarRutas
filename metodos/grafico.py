@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 from data import city_locations, mapa
 
 def graficar(path_x,path_y):

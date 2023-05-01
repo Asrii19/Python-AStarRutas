@@ -1,6 +1,6 @@
 import math
-from data import city_locations, hallar_maximos, mapa
-from grafico import graficar
+from data import city_locations, mapa
+from metodos import hallar_maximos
 
 # función para calcular la distancia entre la ciudad actual y el destino
 def distancia(ciudad_actual, destino):
@@ -35,24 +35,3 @@ def astar_search(inicio, destino):
         ruta.append(ciudad_elegida) #se agrega a la ruta
         visited.add(ciudad_elegida) #se agrega a los visitados
     return ruta
-
-def encontrar_coordenadas(path):
-    path_x = []
-    path_y = []
-    for point in path: #por cada punto de la ruta
-        for city, value in city_locations.items(): #se obtienen las coordenadas correspondientes
-            if city == point:
-                path_x.append(value[0])
-                path_y.append(value[1])
-    return path_x, path_y
-
-# MÉTODO MAIN
-if __name__ == "__main__":
-    start=str(input("Ingrese el punto de inicio: "))
-    goal=str(input("Ingrese el punto de llegada: "))
-    path = astar_search(start,goal)
-
-    path_x, path_y = encontrar_coordenadas(path)
-
-    graficar(path_x,path_y)
-    print(path)
