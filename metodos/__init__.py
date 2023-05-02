@@ -1,5 +1,5 @@
 import math
-from data import city_locations, city_prices, totales
+from data import city_locations, city_prices, totales, mapa
 
 # función para calcular la distancia entre la ciudad actual y el destino
 def distancia(ciudad_actual, destino):
@@ -59,17 +59,23 @@ def hallar_totales(ruta):
     #precio total
     
 
-def hallar_maximos():
+def hallar_maximos(destino):
+    array_dlr = []
     array_distancias = []
     array_precios = []
+    # hallar dlr maximo
     for city1 in city_locations.keys():
-        for city2 in city_locations.keys():
+        x1, y1 = city_locations[city1]
+        x2, y2 = city_locations[destino]
+        array_dlr.append(math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
+    # hallar distancia maxima
+    for city1,vecinos in mapa.items():
+        for value in vecinos.values():
             x1, y1 = city_locations[city1]
-            x2, y2 = city_locations[city2]
+            x2, y2 = value
             array_distancias.append(math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
-    
     """ for value in city_prices.values():
         for price in value.values():
             array_precios.append(price) """
 
-    return array_distancias, array_precios
+    return array_dlr, array_distancias, array_precios
