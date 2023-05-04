@@ -64,11 +64,11 @@ def astar_search(inicio, destino):
         if not vecinos: # si el metodo se adelanta
             ruta1=astar_search(inicio,ruta[-1])
             ruta2=astar_search(ruta[-1],destino)
+            ruta1.remove(ruta1[-1])
             return ruta1+ruta2
         _, ciudad_elegida = min(vecinos) # elegir el vecino con menor f(n) / el min("tupla") elige el valor mínimo del primer elemento
         
         ruta.append(ciudad_elegida) #se agrega a la ruta
-        print("RUTAAA: ", ruta)
         for ciudad in closedset: # se eliminan los vecinos de las ciudades evaluadas del openset
             if ciudad in openset:
                 del openset[ciudad] 
