@@ -67,13 +67,20 @@ mapa = {
     "Missouri": {"Iowa": (-93.0977, 41.8780), "Nebraska": (-99.9018, 41.4925), "Kansas": (-98.3804, 38.5266), "Oklahoma": (-97.5164, 35.0078), "Arkansas": (-92.3020, 34.7465)},
     "Iowa": {"Dakota Del Sur": (-99.4388, 44.3668), "Nebraska": (-99.9018, 41.4925), "Missouri": (-92.4638, 38.5733)}
 }
+
+# DATA PARA HALLAR COSTO
+velocidad = 35 # km/h
+
 # DATA PARA LA HEURÍSTICA
 array_distancia=[]
 array_preciokilometro=[]
+array_tiempo=[]
+
 precio_kilometro = []
 
-
+# COSTO TOTAL
 totales = {
     "distancia_total":0,
-    "precio_total":0
+    "precio_total":0,
+    "tiempo_total":0
 }
