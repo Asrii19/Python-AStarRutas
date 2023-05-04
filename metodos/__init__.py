@@ -6,7 +6,6 @@ def distancia(ciudad_actual, destino):
     x1, y1 = city_locations[ciudad_actual]
     x2, y2 = city_locations[destino]
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-
 # distancia en kilometros
 def haversine(ciudad_actual, destino):
     lon1, lat1 = city_locations[ciudad_actual]
@@ -20,7 +19,7 @@ def haversine(ciudad_actual, destino):
     a = math.sin(dLat / 2) ** 2 + math.sin(dLon / 2) ** 2 * math.cos(lat1) * math.cos(lat2)
     c = 2 * math.asin(math.sqrt(a))
     
-    distance = r * c
+    distance = round(r * c,2)
     return distance
 
 # funcion para calcular el precio entre la ciudad actual y el vecino
