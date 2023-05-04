@@ -1,20 +1,30 @@
-import math
-from data import mapa
-from metodos import hallar_maximos, haversine
+from data import mapa, array_distancia, precio_kilometro
+from metodos import haversine, normalizar, precio
 
 # función evaluadora f(n)
 def fevaluadora(ciudad_actual,vecino,destino,openset):
+    w1,w2,w3,w4 = 0.5,0.5,1,1 #declaracion de pesos
     #g(x)
     #OBTENER VARIABLES (4)
     distancia_act = haversine(ciudad_actual,vecino)
+    precio_act = precio(ciudad_actual,vecino)
 
-    g_x = openset[ciudad_actual][0] + distancia_act
+    #normalizar
+    distancia_norm = normalizar(distancia_act,min(array_distancia),max(array_distancia))
+    precio_norm = normalizar(precio_act,min(array_distancia)*precio_kilometro[0],max(array_distancia)*precio_kilometro[0])
+    
+    g_x = openset[ciudad_actual][0]+ distancia_norm*w1 + precio_norm*w2
 
     #h(x)
     #OBTENER VARIABLES (1)
     dlr_act = haversine(vecino,destino) #DISTANCIA RECTA DEL VECINO AL OBJETIVO
+    plr_act = dlr_act*precio_kilometro[0]
 
-    h_x = dlr_act
+    #normalizar
+    dlr_norm = normalizar(dlr_act,min(array_distancia),max(array_distancia))
+    plr_norm = normalizar(plr_act,min(array_distancia)*precio_kilometro[0],max(array_distancia)*precio_kilometro[0])
+
+    h_x = dlr_norm*w1 + plr_norm*w2
 
     #f(x)
     f_x = g_x + h_x

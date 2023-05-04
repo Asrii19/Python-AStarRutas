@@ -23,8 +23,28 @@ city_locations = { #longitud, latitud
 }
 
 city_prices = {
-    "Washington": {"Oregon": 2, "Idaho": 1}
+    "Washington": {"Oregon": (142), "Idaho": (115)},
+    "Oregon": {"Washington": (142), "California": (132), "Idaho": (108), "Nevada": (163)},
+    "California": {"Oregon": (132), "Nevada": (74), "Arizona": (398)},
+    "Nevada": {"Oregon": (163), "California": (74), "Arizona": (313), "Utah": (109), "Idaho": (211)},
+    "Idaho": {"Washington": (115), "Oregon": (108), "Nevada": (211), "Utah": (121), "Wyoming": (138), "Montana": (118)},
+    "Montana": {"Idaho": (118), "Wyoming": (206), "Dakota Del Norte": (191), "Dakota Del Sur": (210)},
+    "Wyoming": {"Montana": (206), "Idaho": (138), "Utah": (65), "Colorado": (62), "Nebraska": (117), "Dakota Del Sur": (123)},
+    "Utah": {"Nevada": (109), "Idaho": (121), "Wyoming": (65), "Colorado": (89),"Nuevo Mexico": (116), "Arizona": (106)},
+    "Arizona": {"California": (398), "Nevada": (313), "Utah": (109), "Nuevo Mexico": (56)},
+    "Colorado": {"Wyoming": (62), "Nebraska": (117), "Kansas": (112), "Oklahoma": (140), "Nuevo Mexico": (101) , "Utah": (89)},
+    "Nuevo Mexico": {"Arizona": (56), "Utah": (116), "Colorado": (101), "Oklahoma": (123), "Texas": (152)},
+    "Dakota Del Norte": {"Montana": (191), "Dakota Del Sur": (70)},
+    "Dakota Del Sur": {"Montana": (210), "Wyoming": (123), "Nebraska": (129), "Iowa": (90), "Dakota Del Norte": (70)},
+    "Nebraska": {"Wyoming": (117), "Dakota Del Sur": (129), "Iowa": (263), "Colorado": (117), "Kansas": (115), "Missouri": (129)},
+    "Kansas": {"Colorado": (112), "Nebraska": (115), "Missouri": (109), "Oklahoma": (101)},
+    "Texas": {"Nuevo Mexico": (152), "Oklahoma": (116), "Arkansas": (176)},
+    "Oklahoma": {"Kansas": (101), "Nuevo Mexico": (123), "Texas": (116), "Arkansas": (160), "Missouri": (158)},
+    "Arkansas": {"Missouri": (157), "Oklahoma": (160), "Texas": (176)},
+    "Missouri": {"Iowa": (186), "Nebraska": (129), "Kansas": (109), "Oklahoma": (158), "Arkansas": (157)},
+    "Iowa": {"Dakota Del Sur": (90), "Nebraska": (263), "Missouri": (186)}
 }
+
 mapa = {
     "Washington": {"Oregon": (-122.3321, 43.8041), "Idaho": (-114.7420, 44.0682)},
     "Oregon": {"Washington": (-120.7401, 47.7511), "California": (-119.4179, 36.7783), "Idaho": (-114.7420, 44.0682), "Nevada": (-116.7939, 38.8026)},
@@ -47,6 +67,11 @@ mapa = {
     "Missouri": {"Iowa": (-93.0977, 41.8780), "Nebraska": (-99.9018, 41.4925), "Kansas": (-98.3804, 38.5266), "Oklahoma": (-97.5164, 35.0078), "Arkansas": (-92.3020, 34.7465)},
     "Iowa": {"Dakota Del Sur": (-99.4388, 44.3668), "Nebraska": (-99.9018, 41.4925), "Missouri": (-92.4638, 38.5733)}
 }
+# DATA PARA LA HEURÍSTICA
+array_distancia=[]
+array_preciokilometro=[]
+precio_kilometro = []
+
 
 totales = {
     "distancia_total":0,

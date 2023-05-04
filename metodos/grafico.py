@@ -27,13 +27,14 @@ def graficar(path_x,path_y):
 
     # Añadir títulos y etiquetas de los ejes
     distancia = round(totales.get("distancia_total"),2)
-    ax.text(-0.1, -0.08, f"Distancia: {distancia}km, Precio: 0$",
+    precio = round(totales.get("precio_total"),2)
+    ax.text(-0.1, -0.08, f"Distancia: {distancia}km, Precio: {precio}$",
         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
         ha='left', va='top',
         transform=ax.transAxes)
     ax.set_title('Ruta con A*')
     ax.set_xlabel('Longitud')
     ax.set_ylabel('Latitud')
-
+    
     # Mostrar la gráfica
     plt.show()

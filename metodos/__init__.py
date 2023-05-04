@@ -1,11 +1,8 @@
 import math
-from data import city_locations, city_prices, totales, mapa
+from data import city_locations,city_prices, mapa
+from data import array_distancia, array_preciokilometro
+from data import precio_kilometro, totales
 
-# función para calcular la distancia entre la ciudad actual y el destino
-def distancia(ciudad_actual, destino):
-    x1, y1 = city_locations[ciudad_actual]
-    x2, y2 = city_locations[destino]
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 # distancia en kilometros
 def haversine(ciudad_actual, destino):
     lon1, lat1 = city_locations[ciudad_actual]
@@ -25,7 +22,7 @@ def haversine(ciudad_actual, destino):
 # funcion para calcular el precio entre la ciudad actual y el vecino
 def precio(ciudad_actual, vecino):
     price = city_prices[ciudad_actual][vecino]
-    return float(price)
+    return round(price,2)
 
 # normalizar datos
 def normalizar(a,a_min,a_max):
@@ -49,32 +46,24 @@ def encontrar_ciudad(city):
     return False, city
 
 def hallar_totales(ruta):
-    #distancia recorrida
-    ruta_distancia=[]
+    ruta_distancia=[] #distancia recorrida
+    ruta_precio = [] #precio de la ruta
     for i,city in enumerate(ruta):
         if not i+1 == len(ruta):
             ruta_distancia.append(haversine(city,ruta[i+1]))
+            ruta_precio.append(precio(city,ruta[i+1]))
         totales["distancia_total"] = sum(ruta_distancia)
-    #precio total
-    
+        totales["precio_total"] = sum(ruta_precio)
 
-def hallar_maximos(destino):
-    array_dlr = []
-    array_distancias = []
-    array_precios = []
-    # hallar dlr maximo
+def definir_data():
     for city1 in city_locations.keys():
-        x1, y1 = city_locations[city1]
-        x2, y2 = city_locations[destino]
-        array_dlr.append(math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
-    # hallar distancia maxima
-    for city1,vecinos in mapa.items():
-        for value in vecinos.values():
-            x1, y1 = city_locations[city1]
-            x2, y2 = value
-            array_distancias.append(math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
-    """ for value in city_prices.values():
-        for price in value.values():
-            array_precios.append(price) """
+        for city2 in city_locations.keys():
+            array_distancia.append(haversine(city1,city2))
+    for city, neighbors in mapa.items():
+        for neighbor in neighbors.keys():
+            d=haversine(city,neighbor)
+            p=precio(city,neighbor)
+            array_preciokilometro.append(round(p/d,2))#precio a su vecino/distancia a su vecino
+            promedio = round(sum(array_preciokilometro)/len(array_preciokilometro),2)
+    precio_kilometro.append(promedio)
 
-    return array_dlr, array_distancias, array_precios
