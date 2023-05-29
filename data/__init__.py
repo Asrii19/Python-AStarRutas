@@ -21,7 +21,7 @@ city_locations = { #longitud, latitud
     "Missouri": (-92.4638, 38.5733),
     "Iowa": (-93.0977, 41.8780)
 }
-
+# precio de viaje entre ciudad y ciudad
 city_prices = {
     "Washington": {"Oregon": (142), "Idaho": (115)},
     "Oregon": {"Washington": (142), "California": (132), "Idaho": (108), "Nevada": (163)},
@@ -45,6 +45,7 @@ city_prices = {
     "Iowa": {"Dakota Del Sur": (90), "Nebraska": (263), "Missouri": (186)}
 }
 
+# trazado de rutas
 mapa = {
     "Washington": {"Oregon": (-122.3321, 43.8041), "Idaho": (-114.7420, 44.0682)},
     "Oregon": {"Washington": (-120.7401, 47.7511), "California": (-119.4179, 36.7783), "Idaho": (-114.7420, 44.0682), "Nevada": (-116.7939, 38.8026)},
@@ -81,6 +82,7 @@ precio_kilometro = []
 # COSTO TOTAL
 totales = {
     "distancia_total":0,
-    "precio_total":0,
-    "tiempo_total":0
+    "tiempo_total":0,
+    "ganancia_total":0,
+    "precio_total":0
 }

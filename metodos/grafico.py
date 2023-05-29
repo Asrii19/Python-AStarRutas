@@ -30,12 +30,13 @@ def graficar(path_x,path_y):
     distancia = round(totales.get("distancia_total"),2)
     precio = round(totales.get("precio_total"),2)
     tiempo = round(totales.get("tiempo_total"),2)
+    ganancia = round(totales.get("ganancia_total",2))
 
-    ax.text(-0.1, -0.08, f"Distancia: {distancia}km, Precio: {precio}$",
+    ax.text(-0.15, -0.08, f"Distancia: {distancia}km, Tiempo: {tiempo}h",
         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
         ha='left', va='top',
         transform=ax.transAxes) #cuadro de texto mostrando los valores de las variables
-    ax.text(0.6, -0.08, f"Tiempo: {tiempo}h, x: 0",
+    ax.text(0.6, -0.08, f"Ganancia: S/{ganancia}, Precio: S/{precio}",
         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
         ha='left', va='top',
         transform=ax.transAxes) #cuadro de texto mostrando los valores de las variables

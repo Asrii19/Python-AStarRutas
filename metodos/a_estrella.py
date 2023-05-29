@@ -1,76 +1,107 @@
 from data import mapa,array_distancia,array_tiempo,precio_kilometro
 from metodos import haversine, normalizar, precio, tiempo
+from models.ciudad import Ciudad as Nodo
 
-# función evaluadora f(n)
-def fevaluadora(ciudad_actual,vecino,destino,openset):
-    w1,w2,w3,w4 = 0.3,0.3,0.3,1 #declaracion de pesos
-    #g(x)
-    #OBTENER VARIABLES (4)
-    distancia_act = haversine(ciudad_actual,vecino)
-    precio_act = precio(ciudad_actual,vecino)
-    tiempo_act = tiempo(ciudad_actual,vecino)
-
-    #normalizar
-    distancia_norm = normalizar(distancia_act,min(array_distancia),max(array_distancia))
-    precio_norm = normalizar(precio_act,min(array_distancia)*precio_kilometro[0],max(array_distancia)*precio_kilometro[0])
-    tiempo_norm = normalizar(tiempo_act,min(array_tiempo),max(array_tiempo))
-
-    g_x = openset[ciudad_actual][0]+ distancia_norm*w1 + precio_norm*w2 + tiempo_norm*w3
-
-    #h(x)
-    #OBTENER ESTIMACIÓN DE LAS VARIABLES (4)
-    dlr_act = haversine(vecino,destino) #DISTANCIA RECTA DEL VECINO AL OBJETIVO
-    plr_act = dlr_act*precio_kilometro[0] #PRECIO ESTIMADO PARA LLEGAR DEL VECINO AL OBJETIVO
-    tlr_act = tiempo(vecino,destino) #TIEMPO ESTIMADO PARA LLEGAR DEL VECINO AL OBJETIVO
-
-    #normalizar
-    dlr_norm = normalizar(dlr_act,min(array_distancia),max(array_distancia))
-    plr_norm = normalizar(plr_act,min(array_distancia)*precio_kilometro[0],max(array_distancia)*precio_kilometro[0])
-    tlr_norm = normalizar(tlr_act,min(array_tiempo),max(array_tiempo))
-
-    h_x = dlr_norm*w1 + plr_norm*w2 + tlr_norm*w3
-
-    #f(x)
-    f_x = g_x + h_x
-    return g_x, f_x
-
-# función de búsqueda A*
+# Función de búsqueda A*
 def astar_search(inicio, destino):
-    ruta = [inicio] # lista de ciudades visitadas (ganador)
-    closedset = set() # conjunto de ciudades visitadas y evaluadas
-    openset = {inicio: (0,[inicio])} # conjunto de ciudades disponibles para visitar /(g(x) costo acumulado,ruta hasta el actual nodo)
-    
-    while ruta[-1] != destino: # siempre y cuando la ultima ciudad en el recorrido sea diferente, continúa
-        openset_aux = {}
-        vecinos = [] # lista de tuplas [resultado de f(n),vecinos no visitados]
-        for ciudad_actual in openset.keys(): #SE EVALUAN LOS ELEMENTOS DEL OPENSET
-            for vecino in mapa[ciudad_actual].keys() - closedset: #SE SACAN LOS VECINOS DEL ELEMENTO ACTUAL DEL OPENSET
-                g_evaluada, f_evaluada = fevaluadora(ciudad_actual,vecino,destino,openset)
-                
-                ruta_aux = openset[ciudad_actual][1] + [vecino]
-                #print("AUX: ",ruta_aux)
+    openset = []  # Lista de nodos por evaluar
+    closedset = set()  # Conjunto de nodos evaluados
 
-                tupla = (f_evaluada, vecino)
-                if ciudad_actual == ruta[-1]:
-                    vecinos.append(tupla)
-                
-                if vecino not in openset.keys(): # si el vecino no está en openset
-                    openset_aux[vecino] = (g_evaluada,ruta_aux) # se añade a la lista
-                else: #si ya estaba en la lista
-                    if  g_evaluada>openset[vecino][0]: #se evalua la g
-                        continue
-            #SE AÑADE EL NODO EVALUADO
-            closedset.add(ciudad_actual) # se agrega a los visitados y evaluados
-        if not vecinos: # si el metodo se adelanta
-            ruta1=astar_search(inicio,ruta[-1])
-            ruta2=astar_search(ruta[-1],destino)
-            ruta1.remove(ruta1[-1])
-            return ruta1+ruta2
-        _, ciudad_elegida = min(vecinos) # elegir el vecino con menor f(n) / el min("tupla") elige el valor mínimo del primer elemento
-        
-        ruta.append(ciudad_elegida) #se agrega a la ruta
-        for ciudad in closedset: # se eliminan los vecinos de las ciudades evaluadas del openset
-            if ciudad in openset:
-                del openset[ciudad] 
-        openset.update(openset_aux)
-    return ruta
+    # Crear el nodo inicial
+    ruta_inicial = [inicio]
+    nodo_inicial = Nodo(inicio, 0, heuristica(inicio, destino), ruta_inicial)
+    openset.append(nodo_inicial)
+
+    while openset:
+        # Obtener el nodo con el menor valor en f(x)
+        nodo_actual = min(openset, key=lambda x: x.f_x)
+
+        # Si se llega al destino, retornar la ruta
+        print(nodo_actual.ciudad)
+        if nodo_actual.ciudad == destino:
+            return nodo_actual.ruta
+
+        # Mover el nodo actual de openset a closedset
+        openset.remove(nodo_actual)
+
+        # Generar los nodos vecinos y evaluarlos
+        vecinos = generar_vecinos(nodo_actual.ciudad)
+        for vecino in vecinos:
+            print("vecino: ",vecino.ciudad)
+        for vecino in vecinos:
+            # Calcular el nuevo g_x acumulado
+            nuevo_g_x = nodo_actual.g_x + calcular_costo(nodo_actual.ciudad, vecino.ciudad)
+
+            if vecino.ciudad in closedset:
+                continue  # El vecino ya fue evaluado, continuar con el siguiente
+
+            if vecino not in openset:
+                # Añadir el vecino a openset si no está presente
+                vecino.g_x = nuevo_g_x
+                vecino.h_x = heuristica(vecino.ciudad, destino)
+                vecino.f_x = vecino.g_x + vecino.h_x
+                vecino.ruta = nodo_actual.ruta + [vecino.ciudad]
+                openset.append(vecino)
+            else:
+                # Actualizar el vecino existente si se encuentra una ruta más corta
+                if nuevo_g_x < vecino.g_x:
+                    vecino.g_x = nuevo_g_x
+                    vecino.f_x = vecino.g_x + vecino.h_x
+                    vecino.ruta = nodo_actual.ruta + [vecino.ciudad]
+
+        closedset.add(nodo_actual.ciudad)
+
+    # Si no se encontró una ruta, retornar None
+    print("NADA")
+    return None
+
+# Función para calcular el costo entre dos ciudades
+def calcular_costo(ciudad_actual, ciudad_vecino): #g_x
+    w1,w2,w3,w4 = 0.25,0.25,0.25,0.25 #declaracion de pesos (distancia,tiempo,ganancia,precio)
+    # g(x) (costo)
+    # OBTENER VARIABLES (4)
+    # distancia
+    distancia_act = haversine(ciudad_actual,ciudad_vecino)
+    distancia_norm = normalizar(distancia_act,min(array_distancia),max(array_distancia)) # normalizar
+    # tiempo
+    tiempo_act = tiempo(ciudad_actual,ciudad_vecino)
+    tiempo_norm = normalizar(tiempo_act,min(array_tiempo),max(array_tiempo)) # normalizar
+    # ganancia (falta)
+
+    # precio del viaje
+    precio_act = precio(ciudad_actual,ciudad_vecino)
+    precio_norm = normalizar(precio_act,min(array_distancia)*precio_kilometro[0],
+                             max(array_distancia)*precio_kilometro[0]) # normalizar
+    # costo acumulado (mininimizar_distancia,minimizar_tiempo,maximizar_ganancia,minimizar_precio)
+    g_x = distancia_norm*w1 + tiempo_norm*w2+  precio_norm*w4 
+    return g_x  # Costo trivial, no considera ninguna variable adicional
+
+# Función de heurística
+def heuristica(vecino, destino): #h_x
+    w1,w2,w3,w4 = 0.25,0.25,0.25,0.25 #declaracion de pesos (distancia,tiempo,ganancia,precio)
+    # h(x) (heurística, estimación)
+    # OBTENER ESTIMACIÓN DE LAS VARIABLES (4)
+    # distancia en linea recta al destino (dlr)
+    dlr_act = haversine(vecino,destino) # distancia estimada
+    dlr_norm = normalizar(dlr_act,min(array_distancia),max(array_distancia)) # normalizar
+    # tiempo en linea recta al destino (tlr)
+    tlr_act = tiempo(vecino,destino)
+    tlr_norm = normalizar(tlr_act,min(array_tiempo),max(array_tiempo)) # normalizar
+    # ganancia en linea recta al destino (glr)
+
+    # precio en linea recta al destino (clr)
+    plr_act = dlr_act*precio_kilometro[0]
+    plr_norm = normalizar(plr_act,min(array_distancia)*precio_kilometro[0],
+                          max(array_distancia)*precio_kilometro[0]) # normalizar
+    # heurística (mininimizar_distancia,minimizar_tiempo,maximizar_ganancia,minimizar_precio)
+    h_x = dlr_norm*w1 + tlr_norm*w2 + plr_norm*w4
+    return 0  # Heurística trivial, no considera ninguna variable adicional
+
+# Función para generar los vecinos de un nodo
+def generar_vecinos(ciudad_actual):
+    vecinos = []
+    for city in mapa[ciudad_actual].keys():
+        vecino = Nodo("",0,0,[])
+        vecino.ciudad=city
+        vecinos.append(vecino)
+    return vecinos

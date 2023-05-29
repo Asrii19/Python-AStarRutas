@@ -19,7 +19,7 @@ def haversine(ciudad_actual, destino):
     distance = round(r * c,2)
     return distance
 
-# funcion para calcular el precio entre la ciudad actual y el vecino
+# funcion para calcular el precio de viaje entre la ciudad actual y el vecino
 def precio(ciudad_actual, vecino):
     price = city_prices[ciudad_actual][vecino]
     return round(price,2)
@@ -50,10 +50,10 @@ def encontrar_ciudad(city):
             return True, city
     return False, city
 
-def hallar_totales(ruta):
+def hallar_totales(ruta): # para la impresión en el resultado
     ruta_distancia=[] #distancia recorrida
-    ruta_precio = [] #precio de la ruta
-    ruta_tiempo = [] #tiempo de la ruta
+    ruta_precio = [] #precio de la ruta optima
+    ruta_tiempo = [] #tiempo de la ruta optima
     for i,city in enumerate(ruta):
         if not i+1 == len(ruta):
             ruta_distancia.append(haversine(city,ruta[i+1]))
@@ -63,18 +63,22 @@ def hallar_totales(ruta):
     totales["precio_total"] = sum(ruta_precio)
     totales["tiempo_total"] = sum(ruta_tiempo)
 
-def definir_data():
-    for city1 in city_locations.keys(): # define el array con todas las distancias posibles
+def definir_data(): # para la normalización
+    #distancia
+    for city1 in city_locations.keys():
         for city2 in city_locations.keys():
             array_distancia.append(haversine(city1,city2))
+    #tiempo
+    for city1 in city_locations.keys():
+        for city2 in city_locations.keys():
+            array_tiempo.append(tiempo(city1,city2))
+    #ganancia
+
+    #precio de viaje
     for city, neighbors in mapa.items(): # define un array con todos los precios posibles entre ciudades
         for neighbor in neighbors.keys():
             d=haversine(city,neighbor)
             p=precio(city,neighbor)
-            array_preciokilometro.append(round(p/d,2))#precio a su vecino/distancia a su vecino
+            array_preciokilometro.append(round(p/d,2))# precio a su vecino/distancia a su vecino
             promedio = round(sum(array_preciokilometro)/len(array_preciokilometro),2)
     precio_kilometro.append(promedio) # se define el precio promedio por unidad de distancia (km)
-    for city1 in city_locations.keys(): # se define un array con todas los tiempos posibles para llegar
-        for city2 in city_locations.keys():
-            array_tiempo.append(tiempo(city1,city2))
-
