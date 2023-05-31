@@ -107,12 +107,10 @@ city_earnings={
 
 }
 
-# DATA PARA HALLAR COSTO
-velocidad = 35 # km/h
-
 # DATA PARA LA HEURÍSTICA
 array_distancia=[]
-array_tiempo=[]
+tiempo_kilometro = []
+array_tiempokilometro = []
 ganancia_kilometro = []
 array_gananciakilometro = []
 precio_kilometro = []

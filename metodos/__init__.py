@@ -1,7 +1,7 @@
 import math
-from data import city_locations,city_earnings,city_prices, mapa
-from data import array_distancia, array_preciokilometro, array_tiempo
-from data import precio_kilometro, totales, velocidad
+from data import city_locations,city_time,city_earnings,city_prices, mapa
+from data import array_distancia, array_preciokilometro, array_tiempokilometro, array_gananciakilometro
+from data import precio_kilometro, tiempo_kilometro, totales
 
 # distancia en kilometros
 def haversine(ciudad_actual, destino):
@@ -21,7 +21,7 @@ def haversine(ciudad_actual, destino):
 
 # funcion para calcular el tiempo entre 2 ciudades
 def tiempo(ciudad_actual, vecino):
-    time = haversine(ciudad_actual,vecino)/velocidad # d = v*t -> t = d/v
+    time = city_time[ciudad_actual][vecino]
     return round(time,2)
 
 # funcion para calcular la ganancia entre 2 ciudades
@@ -63,6 +63,7 @@ def hallar_totales(ruta): # para la impresión en el resultado
     for i,city in enumerate(ruta):
         if not i+1 == len(ruta):
             ruta_distancia.append(haversine(city,ruta[i+1]))
+            print(tiempo(city,ruta[i+1]))
             ruta_tiempo.append(tiempo(city,ruta[i+1]))
             #ruta_ganancia.append(ganancia(city,ruta[i+1]))
             ruta_precio.append(precio(city,ruta[i+1]))
@@ -76,17 +77,19 @@ def definir_data(): # para la normalización
     for city1 in city_locations.keys():
         for city2 in city_locations.keys():
             array_distancia.append(haversine(city1,city2))
-    #tiempo
-    for city1 in city_locations.keys():
-        for city2 in city_locations.keys():
-            array_tiempo.append(tiempo(city1,city2))
     #ganancia
     
     #precio de viaje
     for city, neighbors in mapa.items(): # define un array con todos los precios posibles entre ciudades
         for neighbor in neighbors.keys():
             d=haversine(city,neighbor)
-            p=precio(city,neighbor)
+            t=tiempo(city,neighbor) #tiempo
+            p=precio(city,neighbor) #precio
+
+            array_tiempokilometro.append(round(t/d,2))# tiempo a su vecino/distancia a su vecino
             array_preciokilometro.append(round(p/d,2))# precio a su vecino/distancia a su vecino
-            promedio = round(sum(array_preciokilometro)/len(array_preciokilometro),2)
-    precio_kilometro.append(promedio) # se define el precio promedio por unidad de distancia (km)
+
+            promedio_tiempokilometro = round(sum(array_tiempokilometro)/len(array_tiempokilometro),2)
+            promedio_preciokilometro = round(sum(array_preciokilometro)/len(array_preciokilometro),2)
+    tiempo_kilometro.append(promedio_tiempokilometro) # se define el tiempo promedio por unidad de distancia (km)
+    precio_kilometro.append(promedio_preciokilometro) # se define el precio promedio por unidad de distancia (km)

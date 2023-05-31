@@ -1,4 +1,4 @@
-from data import mapa,array_distancia,array_tiempo,precio_kilometro
+from data import mapa,array_distancia,precio_kilometro,tiempo_kilometro
 from metodos import haversine, normalizar, precio, tiempo, ganancia
 from models.ciudad import Ciudad as Nodo
 
@@ -62,7 +62,8 @@ def calcular_costo(ciudad_actual, ciudad_vecino): #g_x
     distancia_norm = normalizar(distancia_act,min(array_distancia),max(array_distancia)) # normalizar
     # tiempo
     tiempo_act = tiempo(ciudad_actual,ciudad_vecino)
-    tiempo_norm = normalizar(tiempo_act,min(array_tiempo),max(array_tiempo)) # normalizar
+    tiempo_norm = normalizar(tiempo_act,min(array_distancia)*tiempo_kilometro[0],
+                             max(array_distancia)*tiempo_kilometro[0]) # normalizar
     # ganancia (falta)
 
     # precio del viaje
@@ -81,8 +82,9 @@ def heuristica(vecino, destino): #h_x
     dlr_act = haversine(vecino,destino) # distancia estimada
     dlr_norm = normalizar(dlr_act,min(array_distancia),max(array_distancia)) # normalizar
     # tiempo en linea recta al destino (tlr)
-    tlr_act = tiempo(vecino,destino)
-    tlr_norm = normalizar(tlr_act,min(array_tiempo),max(array_tiempo)) # normalizar
+    tlr_act = dlr_act*tiempo_kilometro[0]
+    tlr_norm = normalizar(tlr_act,min(array_distancia)*tiempo_kilometro[0],
+                          max(array_distancia)*tiempo_kilometro[0]) # normalizar
     # ganancia en linea recta al destino (glr)
 
     # precio en linea recta al destino (clr)
