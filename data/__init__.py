@@ -77,6 +77,58 @@ city_time = {
     "Tumbes": {"Piura": (2)},
     "Ucayali": {"Pasco": (7), "Huanuco": (5), "Junin": (7)}
 }
+#Pago por realizar coferencia en cada ciudad
+city_ingresos = {
+    "Amazonas": (2376),
+    "Ancash": (3060),
+    "Apurimac": (2598),
+    "Arequipa": (4645),
+    "Ayacucho": (2870),
+    "Cajamarca": (2790),
+    "Cusco": (4130),
+    "Huancavelica": (2990),
+    "Huanuco": (2643),
+    "Ica": (3530),
+    "Junin": (3731),
+    "La Libertad": (3983),
+    "Lambayeque": (3768),
+    "Lima": (4887),
+    "Madre De Dios": (1710),
+    "Moquegua": (2700),
+    "Pasco": (2760),
+    "Piura": (3824),
+    "Puno": (2763),
+    "San Martin": (3377),
+    "Tacna": (2686),
+    "Tumbes": (2810),
+    "Ucayali": (2610)
+}
+#Costo de conferencia en cada ciudad
+city_egresos = {
+    "Amazonas": (723),
+    "Ancash": (1113),
+    "Apurimac": (998),
+    "Arequipa": (1289),
+    "Ayacucho": (1071),
+    "Cajamarca": (1088),
+    "Cusco": (1261),
+    "Huancavelica": (1104),
+    "Huanuco": (1039),
+    "Ica": (1141),
+    "Junin": (1153),
+    "La Libertad": (1297),
+    "Lambayeque": (1222),
+    "Lima": (1435),
+    "Madre De Dios": (600),
+    "Moquegua": (1047),
+    "Pasco": (1031),
+    "Piura": (1176),
+    "Puno": (1096),
+    "San Martin": (1125),
+    "Tacna": (1055),
+    "Tumbes": (1079),
+    "Ucayali": (1014)
+}
 # precio de viaje entre ciudad y ciudad
 city_prices = {
     "Amazonas": {"San Martin": (35), "Cajamarca": (50), "Piura": (40)},
@@ -102,9 +154,6 @@ city_prices = {
     "Tacna": {"Moquegua": (45), "Puno": (9)},
     "Tumbes": {"Piura": (13)},
     "Ucayali": {"Pasco": (80), "Huanuco": (25), "Junin": (33)}
-}
-city_earnings={
-
 }
 
 # DATA PARA LA HEURÍSTICA

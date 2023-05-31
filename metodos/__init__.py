@@ -1,7 +1,7 @@
 import math
-from data import city_locations,city_time,city_earnings,city_prices, mapa
+from data import city_locations,city_time,city_ingresos,city_egresos,city_prices, mapa
 from data import array_distancia, array_preciokilometro, array_tiempokilometro, array_gananciakilometro
-from data import precio_kilometro, tiempo_kilometro, totales
+from data import precio_kilometro, tiempo_kilometro, ganancia_kilometro,totales
 
 # distancia en kilometros
 def haversine(ciudad_actual, destino):
@@ -24,11 +24,10 @@ def tiempo(ciudad_actual, vecino):
     time = city_time[ciudad_actual][vecino]
     return round(time,2)
 
-# funcion para calcular la ganancia entre 2 ciudades
-def ganancia(ciudad_actual, vecino):
-    earnings = city_earnings[ciudad_actual][vecino]
-    #return round(earnings,2)
-    return 0
+# funcion para calcular la ganancia en una ciudad
+def ganancia(vecino):
+    earnings = city_ingresos[vecino]-city_egresos[vecino]
+    return round(earnings,2)
 # funcion para calcular el precio de viaje entre la ciudad actual y el vecino
 def precio(ciudad_actual, vecino):
     price = city_prices[ciudad_actual][vecino]
@@ -63,13 +62,12 @@ def hallar_totales(ruta): # para la impresión en el resultado
     for i,city in enumerate(ruta):
         if not i+1 == len(ruta):
             ruta_distancia.append(haversine(city,ruta[i+1]))
-            print(tiempo(city,ruta[i+1]))
             ruta_tiempo.append(tiempo(city,ruta[i+1]))
-            #ruta_ganancia.append(ganancia(city,ruta[i+1]))
+            ruta_ganancia.append(ganancia(ruta[i+1]))
             ruta_precio.append(precio(city,ruta[i+1]))
     totales["distancia_total"] = sum(ruta_distancia)
     totales["tiempo_total"] = sum(ruta_tiempo)
-    #totales["ganancia_total"] = sum(ruta_ganancia)
+    totales["ganancia_total"] = sum(ruta_ganancia)
     totales["precio_total"] = sum(ruta_precio)
 
 def definir_data(): # para la normalización
@@ -77,19 +75,24 @@ def definir_data(): # para la normalización
     for city1 in city_locations.keys():
         for city2 in city_locations.keys():
             array_distancia.append(haversine(city1,city2))
-    #ganancia
     
-    #precio de viaje
+    #tiempo, ganancia y precio de viaje
     for city, neighbors in mapa.items(): # define un array con todos los precios posibles entre ciudades
         for neighbor in neighbors.keys():
             d=haversine(city,neighbor)
             t=tiempo(city,neighbor) #tiempo
+            g=ganancia(neighbor) #ganancia
             p=precio(city,neighbor) #precio
 
             array_tiempokilometro.append(round(t/d,2))# tiempo a su vecino/distancia a su vecino
+            array_gananciakilometro.append(round(g/d,2))# ganancia/ distancia a su vecino
             array_preciokilometro.append(round(p/d,2))# precio a su vecino/distancia a su vecino
 
             promedio_tiempokilometro = round(sum(array_tiempokilometro)/len(array_tiempokilometro),2)
+            promedio_gananciakilometro = round(sum(array_gananciakilometro)/len(array_gananciakilometro),2)
             promedio_preciokilometro = round(sum(array_preciokilometro)/len(array_preciokilometro),2)
     tiempo_kilometro.append(promedio_tiempokilometro) # se define el tiempo promedio por unidad de distancia (km)
+    ganancia_kilometro.append(promedio_gananciakilometro) # se define la ganancia estimafa por unidad de distancia (km)
     precio_kilometro.append(promedio_preciokilometro) # se define el precio promedio por unidad de distancia (km)
+    print("DATOS: \n\tTiempoKm: ",tiempo_kilometro,
+          "\n\tGananciaKm: ",ganancia_kilometro,"\n\tPrecioKm: ",precio_kilometro)
