@@ -1,7 +1,6 @@
 from metodos.a_estrella import astar_search
 from metodos.grafico import graficar
 from metodos import encontrar_coordenadas, encontrar_ciudad, hallar_totales, definir_data
-from data import precio_kilometro
 if __name__ == "__main__":
     while True:
         bandera, start=encontrar_ciudad(str(input("Ingrese el punto de inicio: ")).title())

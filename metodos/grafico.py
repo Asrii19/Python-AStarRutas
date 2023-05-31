@@ -8,7 +8,7 @@ def graficar(path_x,path_y):
     array_y = [city_location[1] for city_location in city_locations.values()]
 
     # Graficar los PUNTOS 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(12, 8))
     ax.scatter(array_x, array_y) #GRAFICAR LOS PUNTOS
     
     #graficar ruta
@@ -31,12 +31,12 @@ def graficar(path_x,path_y):
     precio = round(totales.get("precio_total"),2)
     tiempo = round(totales.get("tiempo_total"),2)
     ganancia = round(totales.get("ganancia_total",2))
-
-    ax.text(-0.15, -0.08, f"Distancia: {distancia}km, Tiempo: {tiempo}h",
+    moneda = "USD"
+    ax.text(-0.05, -0.08, f"Distancia: {distancia}km, Tiempo: {tiempo}h",
         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
         ha='left', va='top',
         transform=ax.transAxes) #cuadro de texto mostrando los valores de las variables
-    ax.text(0.6, -0.08, f"Ganancia: S/{ganancia}, Precio: S/{precio}",
+    ax.text(0.75, -0.08, f"Ganancia: {ganancia} {moneda}, Precio: {precio} {moneda}",
         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
         ha='left', va='top',
         transform=ax.transAxes) #cuadro de texto mostrando los valores de las variables
@@ -45,4 +45,5 @@ def graficar(path_x,path_y):
     ax.set_ylabel('Latitud')
     
     # Mostrar la gráfica
+    plt.grid(True)
     plt.show()

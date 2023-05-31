@@ -1,5 +1,5 @@
 from data import mapa,array_distancia,array_tiempo,precio_kilometro
-from metodos import haversine, normalizar, precio, tiempo
+from metodos import haversine, normalizar, precio, tiempo, ganancia
 from models.ciudad import Ciudad as Nodo
 
 # Función de búsqueda A*
@@ -17,7 +17,6 @@ def astar_search(inicio, destino):
         nodo_actual = min(openset, key=lambda x: x.f_x)
 
         # Si se llega al destino, retornar la ruta
-        print(nodo_actual.ciudad)
         if nodo_actual.ciudad == destino:
             return nodo_actual.ruta
 
@@ -26,8 +25,6 @@ def astar_search(inicio, destino):
 
         # Generar los nodos vecinos y evaluarlos
         vecinos = generar_vecinos(nodo_actual.ciudad)
-        for vecino in vecinos:
-            print("vecino: ",vecino.ciudad)
         for vecino in vecinos:
             # Calcular el nuevo g_x acumulado
             nuevo_g_x = nodo_actual.g_x + calcular_costo(nodo_actual.ciudad, vecino.ciudad)
@@ -55,9 +52,9 @@ def astar_search(inicio, destino):
     print("NADA")
     return None
 
+w1,w2,w3,w4 = 0.25,0.4,0.25,0.1 #declaracion de pesos (distancia,tiempo,ganancia,precio)
 # Función para calcular el costo entre dos ciudades
 def calcular_costo(ciudad_actual, ciudad_vecino): #g_x
-    w1,w2,w3,w4 = 0.25,0.25,0.25,0.25 #declaracion de pesos (distancia,tiempo,ganancia,precio)
     # g(x) (costo)
     # OBTENER VARIABLES (4)
     # distancia
@@ -78,7 +75,6 @@ def calcular_costo(ciudad_actual, ciudad_vecino): #g_x
 
 # Función de heurística
 def heuristica(vecino, destino): #h_x
-    w1,w2,w3,w4 = 0.25,0.25,0.25,0.25 #declaracion de pesos (distancia,tiempo,ganancia,precio)
     # h(x) (heurística, estimación)
     # OBTENER ESTIMACIÓN DE LAS VARIABLES (4)
     # distancia en linea recta al destino (dlr)
@@ -95,7 +91,7 @@ def heuristica(vecino, destino): #h_x
                           max(array_distancia)*precio_kilometro[0]) # normalizar
     # heurística (mininimizar_distancia,minimizar_tiempo,maximizar_ganancia,minimizar_precio)
     h_x = dlr_norm*w1 + tlr_norm*w2 + plr_norm*w4
-    return 0  # Heurística trivial, no considera ninguna variable adicional
+    return h_x  # Heurística trivial, no considera ninguna variable adicional
 
 # Función para generar los vecinos de un nodo
 def generar_vecinos(ciudad_actual):
