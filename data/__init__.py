@@ -155,6 +155,31 @@ city_prices = {
     "Tumbes": {"Piura": (13)},
     "Ucayali": {"Pasco": (80), "Huanuco": (25), "Junin": (33)}
 }
+city_prices_estudiante={
+    "Amazonas": {"San Martin": (23), "Cajamarca": (12), "Piura": (16)},
+    "Ancash": {"La Libertad": (11), "Lima": (11), "Huanuco": (19), "San Martin": (17)},
+    "Apurimac": {"Ayacucho": (14), "Cusco": (12), "Arequipa": (17)},
+    "Arequipa": {"Apurimac": (17),"Moquegua": (7), "Puno": (6), "Cusco": (8), "Ayacucho": (24), "Ica": (16)},
+    "Ayacucho": {"Apurimac": (14), "Huancavelica": (26), "Arequipa":(24), "Cusco": (22)},
+    "Cajamarca": {"Amazonas": (12), "Lambayeque": (9), "La Libertad": (7)},
+    "Cusco": {"Apurimac": (12), "Arequipa": (8), "Madre De Dios": (12), "Puno": (24), "Ayacucho": (22)}, 
+    "Huancavelica": {"Ayacucho": (26), "Junin": (23), "Ica": (22), "Lima": (14)},
+    "Huanuco": {"Ancash": (19), "Pasco": (19), "Ucayali": (10)},
+    "Ica": {"Arequipa": (16), "Huancavelica": (22), "Lima": (8)},
+    "Junin": {"Pasco": (23), "Huancavelica": (23), "Lima": (11), "Ucayali": (23)},
+    "La Libertad": {"Ancash": (11), "Lambayeque": (12), "Cajamarca": (7)},
+    "Lambayeque": {"La Libertad": (12), "Cajamarca": (9), "Piura": (12)},
+    "Lima": {"Ancash": (11), "Ica": (8), "Junin": (11), "Pasco": (10), "Huancavelica": (14)},
+    "Madre De Dios": {"Puno": (8), "Cusco": (12)},
+    "Moquegua": {"Tacna": (5), "Arequipa": (7), "Puno": (11)},
+    "Pasco": {"Junin": (23), "Huanuco": (19), "Lima": (10), "Ucayali": (40)},
+    "Piura": {"Lambayeque": (12), "Tumbes": (13), "Amazonas": (16)},
+    "Puno": {"Cusco": (24), "Madre De Dios": (8), "Moquegua": (11), "Arequipa": (6), "Tacna": (9)},
+    "San Martin": {"Amazonas": (16), "Ancash": (17)},
+    "Tacna": {"Moquegua": (5), "Puno": (9)},
+    "Tumbes": {"Piura": (13)},
+    "Ucayali": {"Pasco": (40), "Huanuco": (10), "Junin": (23)}
+}
 
 # DATA PARA LA HEURÍSTICA
 array_distancia=[]
@@ -164,7 +189,14 @@ ganancia_kilometro = []
 array_gananciakilometro = []
 precio_kilometro = []
 array_preciokilometro=[]
-
+nro_ejercicio=[]
+# PESOS
+pesos = {
+    "distancia":0,
+    "tiempo":0,
+    "ganancia":0,
+    "precio":0
+}
 # COSTO TOTAL
 totales = {
     "distancia_total":0,

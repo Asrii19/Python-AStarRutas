@@ -1,7 +1,7 @@
 import math
-from data import city_locations,city_time,city_ingresos,city_egresos,city_prices, mapa
+from data import city_locations,city_time,city_ingresos,city_egresos,city_prices,city_prices_estudiante, mapa, pesos
 from data import array_distancia, array_preciokilometro, array_tiempokilometro, array_gananciakilometro
-from data import precio_kilometro, tiempo_kilometro, ganancia_kilometro,totales
+from data import precio_kilometro, tiempo_kilometro, ganancia_kilometro,totales, nro_ejercicio
 
 # distancia en kilometros
 def haversine(ciudad_actual, destino):
@@ -30,7 +30,10 @@ def ganancia(vecino):
     return round(earnings,2)
 # funcion para calcular el precio de viaje entre la ciudad actual y el vecino
 def precio(ciudad_actual, vecino):
-    price = city_prices[ciudad_actual][vecino]
+    if nro_ejercicio[0]==3:
+        price = city_prices[ciudad_actual][vecino]
+    elif(nro_ejercicio[0]==4):
+        price = city_prices_estudiante[ciudad_actual][vecino]
     return round(price,2)
 
 # normalizar datos
@@ -61,21 +64,36 @@ def hallar_totales(ruta): # para la impresión en el resultado
     ruta_precio = [] #precio de la ruta optima
     for i,city in enumerate(ruta):
         if not i+1 == len(ruta):
-            ruta_distancia.append(haversine(city,ruta[i+1]))
-            ruta_tiempo.append(tiempo(city,ruta[i+1]))
-            ruta_ganancia.append(ganancia(ruta[i+1]))
-            ruta_precio.append(precio(city,ruta[i+1]))
+            if nro_ejercicio[0]==3:
+                ruta_distancia.append(haversine(city,ruta[i+1]))
+                ruta_tiempo.append(tiempo(city,ruta[i+1]))
+                ruta_ganancia.append(ganancia(ruta[i+1]))
+                ruta_precio.append(precio(city,ruta[i+1]))
+            elif(nro_ejercicio[0]==4):
+                ruta_distancia.append(haversine(city,ruta[i+1]))
+                ruta_tiempo.append(tiempo(city,ruta[i+1]))
+                ruta_precio.append(precio(city,ruta[i+1]))
     totales["distancia_total"] = sum(ruta_distancia)
     totales["tiempo_total"] = sum(ruta_tiempo)
     totales["ganancia_total"] = sum(ruta_ganancia)
     totales["precio_total"] = sum(ruta_precio)
 
-def definir_data(): # para la normalización
+def definir_data(numero_ejercicio): # para la normalización
+    #definir diccionario 
+    if numero_ejercicio==4:
+        pesos["distancia"],pesos["tiempo"]=0.1,0.3
+        pesos["ganancia"],pesos["precio"]=0,0.6
+    elif(numero_ejercicio==3):
+        pesos["distancia"],pesos["tiempo"]=0.25,0.4
+        pesos["ganancia"],pesos["precio"]=0.25,0.1
+        """ pesos["distancia"],pesos["tiempo"]=0.1,0.1
+        pesos["ganancia"],pesos["precio"]=0.8,0 """
+    nro_ejercicio.append(numero_ejercicio)
+    print(pesos)
     #distancia
     for city1 in city_locations.keys():
         for city2 in city_locations.keys():
             array_distancia.append(haversine(city1,city2))
-    
     #tiempo, ganancia y precio de viaje
     for city, neighbors in mapa.items(): # define un array con todos los precios posibles entre ciudades
         for neighbor in neighbors.keys():

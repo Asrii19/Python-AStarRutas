@@ -1,7 +1,12 @@
 import matplotlib.pyplot as plt
-from data import city_locations, mapa, totales
+from data import city_locations, mapa, totales, nro_ejercicio
 
 def graficar(path_x,path_y):
+    titulo=""
+    if nro_ejercicio[0]==3:
+        titulo="Conferencista"
+    elif nro_ejercicio[0]==4:
+        titulo="Estudiante"
     #OBTENER DATOS (COORDENADAS) DEL MAPA
     labels = [city_location for city_location in city_locations.keys()]
     array_x = [city_location[0] for city_location in city_locations.values()]
@@ -18,7 +23,7 @@ def graficar(path_x,path_y):
             x2=value2[0]
             y1=city_locations[point][1]
             y2=value2[1]
-            ax.plot([x1,x2],[y1,y2], color='#bbbbbb') #UNIR LOS PUNTOS
+            ax.plot([x1,x2],[y1,y2], color='#A0CBE2') #UNIR LOS PUNTOS
 
     #graficar menor ruta y añadir etiquetas
     plt.plot(path_x,path_y, color='red') #UNIR LOS PUNTOS
@@ -40,7 +45,7 @@ def graficar(path_x,path_y):
         bbox=dict(facecolor='white', edgecolor='black', boxstyle='round'),
         ha='left', va='top',
         transform=ax.transAxes) #cuadro de texto mostrando los valores de las variables
-    ax.set_title('Ruta con A*')
+    ax.set_title(f'Ruta con A* - {titulo}')
     ax.set_xlabel('Longitud')
     ax.set_ylabel('Latitud')
     
